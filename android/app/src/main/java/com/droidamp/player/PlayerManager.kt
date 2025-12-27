@@ -20,6 +20,7 @@ data class PlayerState(
     val durationMs: Long = 0,
     val isLoading: Boolean = false,
     val error: String? = null,
+    val playbackEnded: Boolean = false,
 )
 
 class PlayerManager(context: Context) {
@@ -34,6 +35,7 @@ class PlayerManager(context: Context) {
                 _state.value = _state.value.copy(
                     isLoading = playbackState == Player.STATE_BUFFERING,
                     error = if (playbackState == Player.STATE_IDLE) "Playback stopped" else null,
+                    playbackEnded = playbackState == Player.STATE_ENDED,
                 )
             }
 
@@ -79,6 +81,7 @@ class PlayerManager(context: Context) {
             positionMs = 0,
             isLoading = true,
             error = null,
+            playbackEnded = false,
         )
 
         // Setup skip handler for SponsorBlock segments (Phase 4)

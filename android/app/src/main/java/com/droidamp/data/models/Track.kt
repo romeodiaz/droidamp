@@ -23,6 +23,18 @@ data class SkipSegment(
     val category: String,
 )
 
+@Serializable
+data class NextTrackRequest(
+    @SerialName("video_id") val videoId: String,
+    val exclude: List<String>? = null,
+)
+
+@Serializable
+data class MixPlaylistResponse(
+    @SerialName("video_ids") val videoIds: List<String>,
+    @SerialName("mix_id") val mixId: String,
+)
+
 // Local track model with additional state
 data class Track(
     val videoId: String,

@@ -30,3 +30,8 @@ class HealthResponse(BaseModel):
     ytdlp_version: str
 
 
+class MixPlaylistResponse(BaseModel):
+    video_ids: list[str]
+    mix_id: str
+
+

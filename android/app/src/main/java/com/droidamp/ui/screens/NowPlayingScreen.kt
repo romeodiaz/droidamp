@@ -126,7 +126,12 @@ fun NowPlayingScreen(
         PlayerControls(
             isPlaying = uiState.playerState.isPlaying,
             isLoading = uiState.playerState.isLoading,
+            isLoadingNext = uiState.isLoadingNext,
+            hasTrack = track != null,
+            hasPrevious = uiState.hasPrevious,
+            onSkipPrevious = { viewModel.skipToPrevious() },
             onPlayPause = { viewModel.togglePlayPause() },
+            onSkipNext = { viewModel.skipToNext() },
         )
 
         Spacer(modifier = Modifier.height(32.dp))

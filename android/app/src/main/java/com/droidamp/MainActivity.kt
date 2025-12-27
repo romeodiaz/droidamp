@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
         startService(Intent(this, AudioService::class.java))
 
         val app = application as DroidAmpApplication
-        val viewModel = PlayerViewModel(app.playerManager)
+        val viewModel = PlayerViewModel(app.playerManager, app.searchHistoryManager)
 
         setContent {
             DroidAmpTheme {
