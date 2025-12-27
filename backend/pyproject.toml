@@ -1,0 +1,19 @@
+[project]
+name = "droidamp-backend"
+version = "1.0.0"
+description = "DroidAmp music streaming backend"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.109.0",
+    "uvicorn[standard]>=0.27.0",
+    "yt-dlp>=2024.12.23",
+    "httpx>=0.26.0",
+    "pydantic>=2.10.0",
+    "pydantic-settings>=2.6.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-cov>=4.1.0",
+]

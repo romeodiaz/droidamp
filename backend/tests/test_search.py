@@ -52,3 +52,4 @@ def test_search_with_valid_api_key():
         assert "stream_url" in data
         assert "title" in data
 
+

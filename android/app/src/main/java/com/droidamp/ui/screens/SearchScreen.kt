@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -22,8 +24,14 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
@@ -40,6 +48,33 @@ fun SearchScreen(
     modifier: Modifier = Modifier,
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    
+    val interactionSource = remember { MutableInteractionSource() }
+    val isFocused by interactionSource.collectIsFocusedAsState()
+    var wasFocused by remember { mutableStateOf(false) }
+    var textFieldValue by remember { 
+        mutableStateOf(TextFieldValue(text = uiState.searchQuery)) 
+    }
+    
+    // Select all text when field gains focus
+    LaunchedEffect(isFocused) {
+        if (isFocused && !wasFocused && textFieldValue.text.isNotEmpty()) {
+            textFieldValue = textFieldValue.copy(
+                selection = TextRange(0, textFieldValue.text.length)
+            )
+        }
+        wasFocused = isFocused
+    }
+    
+    // Keep text in sync with viewModel when it changes externally
+    LaunchedEffect(uiState.searchQuery) {
+        if (textFieldValue.text != uiState.searchQuery) {
+            textFieldValue = TextFieldValue(
+                text = uiState.searchQuery,
+                selection = TextRange(uiState.searchQuery.length)
+            )
+        }
+    }
 
     Column(
         modifier = modifier
@@ -60,8 +95,11 @@ fun SearchScreen(
 
         // Search input
         OutlinedTextField(
-            value = uiState.searchQuery,
-            onValueChange = { viewModel.updateSearchQuery(it) },
+            value = textFieldValue,
+            onValueChange = { 
+                textFieldValue = it
+                viewModel.updateSearchQuery(it.text) 
+            },
             modifier = Modifier.fillMaxWidth(),
             placeholder = { Text("Song name or artist...") },
             leadingIcon = {
@@ -83,6 +121,7 @@ fun SearchScreen(
                 }
             ),
             singleLine = true,
+            interactionSource = interactionSource,
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -122,4 +161,5 @@ fun SearchScreen(
         )
     }
 }
+
 

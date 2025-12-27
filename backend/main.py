@@ -29,3 +29,4 @@ async def startup():
 
     yt_dlp.YoutubeDL()
 
+
