@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.DroidAmp" parent="android:Theme.Material.NoActionBar">
+        <item name="android:colorPrimary">@color/amp_green</item>
+        <item name="android:colorPrimaryDark">@color/amp_darker</item>
+        <item name="android:colorAccent">@color/amp_green</item>
+        <item name="android:windowBackground">@color/amp_dark</item>
+        <item name="android:statusBarColor">@color/amp_darker</item>
+        <item name="android:navigationBarColor">@color/amp_darker</item>
+    </style>
+</resources>
+
